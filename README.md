@@ -1,1 +1,1 @@
-# CSE370 Group 1 Project
+# CSE370 Project Group 1
