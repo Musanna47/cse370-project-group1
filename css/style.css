@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+}
+
+.center-container {
+  min-width: 300px;
+  max-width: 500px;
+  position: absolute;
+  top: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgb(30, 144, 255);
+}
+
+/*# sourceMappingURL=style.css.map */
