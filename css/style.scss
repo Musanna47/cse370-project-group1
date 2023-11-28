@@ -1,17 +1,111 @@
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@mixin background-image-fit {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 body {
   margin: 0;
+  //font-family: Georgia, Times, "Times New Roman", serif;
+}
+
+.login-body {
+  background-image: url("../images/login-background.webp");
+  @include background-image-fit;
 }
 
 .center-container {
   //width: 40%;
-  min-width: 300px;
-  max-width: 500px;
-  position: absolute;
-  top: 50%;
-  //left: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 400px;
+  height: 300px;
+  @include center;
   //background: dodgerblue;
-  background: rgba(30, 144, 255, 100);
+  //background: #1789e660;
+  background: #1789e6A0;
   //border-radius: 0;
+  color: white;
+  border-radius: 10px;
+}
+
+.login {
+  label {
+    //font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-weight: 400;
+  }
+  h1 {
+    text-align: center;
+    //position: relative;
+    //top: 0;
+    //left: 40%;
+    font-size: 30px;
+  }
+}
+
+
+.center-container-inner {
+  position: relative;
+  @include center;
+  font-size: 20px;
+}
+
+.message {
+  font-size: 25px;
+  //background: #FF7F5090;
+  background: #FFB6C1BB;
+  //display: inline-block;
+  padding: 10px;
+  //margin: 0 auto;
+  margin: 50px auto 0 auto;
+  //width: auto;
+  width: fit-content;
+  block-size: fit-content;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+footer {
+  div {
+    position: fixed;
+    bottom: 0;
+    //left: 500px;
+    background: #00000099;
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    //display: block;
+  }
+}
+
+header {
+  nav {
+    ul {
+      list-style-type: none;
+      background: #00000099;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    a {
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      display: block;
+      text-align: center;
+    }
+    a:hover {
+      color: dodgerblue;
+    }
+    li {
+      float: left;
+    }
+  }
 }

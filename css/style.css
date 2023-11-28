@@ -2,14 +2,84 @@ body {
   margin: 0;
 }
 
+.login-body {
+  background-image: url("../images/login-background.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 .center-container {
-  min-width: 300px;
-  max-width: 500px;
+  width: 400px;
+  height: 300px;
   position: absolute;
   top: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  background: rgb(30, 144, 255);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(23, 137, 230, 0.6274509804);
+  color: white;
+  border-radius: 10px;
+}
+
+.login label {
+  font-weight: 400;
+}
+.login h1 {
+  text-align: center;
+  font-size: 30px;
+}
+
+.center-container-inner {
+  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+}
+
+.message {
+  font-size: 25px;
+  background: rgba(255, 182, 193, 0.7333333333);
+  padding: 10px;
+  margin: 50px auto 0 auto;
+  width: fit-content;
+  block-size: fit-content;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+footer div {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+}
+
+header nav ul {
+  list-style-type: none;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+header nav a {
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+  display: block;
+  text-align: center;
+}
+header nav a:hover {
+  color: dodgerblue;
+}
+header nav li {
+  float: left;
 }
 
 /*# sourceMappingURL=style.css.map */
