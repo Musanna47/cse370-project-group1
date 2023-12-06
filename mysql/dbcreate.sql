@@ -70,13 +70,19 @@ CREATE TABLE cart (
 );
 
 CREATE TABLE discount (
-    campaign_id INT AUTO_INCREMENT,
+    discount_id INT AUTO_INCREMENT,
     campaign_name VARCHAR(30) NOT NULL,
-    food_id INT,
     percentage DECIMAL(5, 2) NOT NULL,
     start_date DATE NOT NULL,
     expiry_date DATE NOT NULL,
-    PRIMARY KEY (campaign_id, food_id),
+    PRIMARY KEY (discount_id)
+);
+
+CREATE TABLE discounted_items (
+    discount_id INT,
+    food_id INT,
+    PRIMARY KEY (discount_id, food_id),
+    FOREIGN KEY (discount_id) REFERENCES discount (discount_id) ON DELETE CASCADE,
     FOREIGN KEY (food_id) REFERENCES menu_item (food_id) ON DELETE CASCADE
 );
 
@@ -125,15 +131,22 @@ CREATE TABLE driver (
     FOREIGN KEY (address_id) REFERENCES address (address_id)
 );
 
+# CREATE TABLE favorites (
+#     favorite_id INT AUTO_INCREMENT,
+#     name VARCHAR(30) NOT NULL,
+#     food_id INT,
+#     quantity INT NOT NULL,
+#     user_id INT NOT NULL,
+#     PRIMARY KEY (favorite_id, food_id),
+#     FOREIGN KEY (food_id) REFERENCES menu_item (food_id) ON DELETE CASCADE,
+#     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+# );
 CREATE TABLE favorites (
-    favorite_id INT AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
+    user_id INT,
     food_id INT,
-    quantity INT NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY (favorite_id, food_id),
-    FOREIGN KEY (food_id) REFERENCES menu_item (food_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+    PRIMARY KEY (user_id, food_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (food_id) REFERENCES menu_item (food_id) ON DELETE CASCADE
 );
 
 CREATE TABLE payment (

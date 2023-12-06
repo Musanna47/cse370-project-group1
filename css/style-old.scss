@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: "Hedvig Letters Serif", serif;
+
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  background: red;
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  color: white;
+  align-items: flex-end;
+  .logo {
+    width: 60px;
+    position: absolute;
+    left: 30px;
+    top: 20px;
+  }
+  h1 {
+    position: absolute;
+    left: 95px;
+    top: 10px;
+    font-size: 30px;
+    font-weight: 400;
+  }
+  .link-block {
+    position: relative;
+    top: 35px;
+    width: 500px;
+    //width: 50%;
+    display: flex;
+    justify-content: center;
+    //align-self: flex-end;
+  }
+  a {
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 17px;
+    font-weight: 400;
+    font-family: "Fira Code", serif;
+  }
+}
+
+.container {
+  position: absolute;
+  top: 150px;
+  left: 5%;
+  background: #FFFF0050;
+  color: white;
+  width: 90%;
+  //max-width: 80%;
+  height: 1000px;
+  display: flex;
+  z-index: -5;
+  justify-content: center;
+  column-gap: 50px;
+  .container-left {
+    width: 300px;
+    flex-grow: 1;
+    background: #FFC0CB50;
+    z-index: 11;
+  }
+  .container-right {
+    width: 300px;
+    flex-grow: 1;
+    background: #00FFFF50;
+    z-index: 12;
+  }
+  p {
+    font-size: 60px;
+    line-height: 1.5;
+    padding-left: 20px;
+  }
+}
+
+.yellow-color {
+  color: darkorange;
+}
+.rectangle-background {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -6;
+}
