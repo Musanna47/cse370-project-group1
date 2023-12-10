@@ -1,6 +1,10 @@
 <?php
-//    global $conn;
-//    require_once "dbconnect.php";
+    global $conn;
+    require_once "dbconnect.php";
+    if (isset($_SESSION["user_id"])) {
+        header("Location: menu-items.php");
+        exit();
+    }
 ?>
 
 <!doctype html>
@@ -28,7 +32,7 @@
         </header>
         <main>
             <p class="large-message">Welcome back!</p>
-            <form name="sign-in" method="post" action="">
+            <form name="sign-in" method="post">
                 <label>Username<br>
                     <input type="text" name="username" required><br>
                 </label>
@@ -41,7 +45,27 @@
                 </label>
                 <input type="submit" name="submit" value="Sign in"><br>
             </form>
-            Don't have an account? <a href="" class="inline-link">Sign up</a>
+            Don't have an account? <a href="sign-up.php" class="inline-link">Sign up</a>
         </main>
     </body>
 </html>
+
+<?php
+    if (isset($_POST["submit"])) {
+        try {
+            $query = "SELECT * FROM users
+                      WHERE username = '".$_POST["username"]."'
+                      AND user_password = '".$_POST["password"]."'";
+            $result = mysqli_query($conn, $query);
+        } catch (mysqli_sql_exception $ex) {
+            exit("Error: ".$ex->getMessage());
+        }
+        if (empty($row = mysqli_fetch_assoc($result))) {
+            unset($_POST);
+            echo "Incorrect username or password!<br>";
+        } else {
+            $_SESSION["user_id"] = $row["user_id"];
+            header("Location: menu-items.php");
+            exit();
+        }
+    }

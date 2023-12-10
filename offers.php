@@ -28,21 +28,47 @@
         </header>
         <main>
             <h2>Here are our latest deals</h2>
-            <?php
-                try {
-                    $query = "SELECT promo_code, percentage, start_date, expiry_date FROM voucher";
-                    $result = mysqli_query($conn, $query);
-                    $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                    foreach ($rows as $row) {
-                        foreach (array_keys($row) as $key) {
-                            echo strtoupper($key).": ".$row[$key]."<br>";
+            <div class="container">
+                <?php
+                    try {
+                        $query =
+                            "SELECT voucher_id AS id, title, description, promo_code, percentage,
+                                start_date, expiry_date
+                            FROM voucher
+                            UNION
+                            (SELECT discount_id AS id, title, description, NULL AS promo_code, percentage,
+                                start_date, expiry_date
+                            FROM discount)
+                            ORDER BY start_date DESC
+                            ";
+                        $result = mysqli_query($conn, $query);
+                        $offers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                        foreach ($offers as $row) {
+                            $id = $row["id"];
+                            $title = $row["title"];
+                            $description = $row["description"];
+                            $promo_code = $row["promo_code"];
+                            $percentage = $row["percentage"];
+                            $start_date = $row["start_date"];
+                            $expiry_date = $row["expiry_date"];
+
+                            echo "<div class='container-item'>
+                                <img src='images/donut.png' alt='donut'>
+                                <div class='title'>$title</div>";
+                            echo "<div>Expiry Date: $expiry_date</div>";
+                            echo (is_null($promo_code)) ?  "<br>" : "<div>PROMO_CODE: $promo_code</div>";
+                            echo "<div>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis molestias quibusdam reprehenderit! 
+                                    Accusantium consequatur dicta, et eveniet exercitationem fuga impedit minus, nobis, nulla possimus quia quis reiciendis rem ut. 
+                                </div>
+                            </div>";
                         }
-                        echo "<br";
+                    } catch (mysqli_sql_exception $ex) {
+                        exit("Error: ".$ex->getMessage());
                     }
-                } catch (mysqli_sql_exception $ex) {
-                    exit("Error: ".$ex->getMessage());
-                }
-            ?>
+                ?>
+
+            </div>
         </main>
     </body>
 </html>

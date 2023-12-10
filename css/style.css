@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
 }
@@ -38,6 +42,157 @@ footer {
   flex-grow: 1;
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.container {
+  display: flex;
+  width: 85%;
+  row-gap: 30px;
+  column-gap: 30px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  background: pink;
+  padding: 10px;
+  border-radius: 10px;
+}
+.container img {
+  width: 100%;
+}
+.container .img-container {
+  width: 200px;
+}
+.container.restaurant-view {
+  column-gap: 50px;
+}
+
+.container-item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  width: 380px;
+  background: lightgreen;
+  border-radius: 15px;
+}
+.container-item img {
+  width: 200px;
+}
+.container-item form {
+  width: 100%;
+}
+.container-item div {
+  background: yellow;
+  width: 100%;
+}
+
+.vertical-container {
+  display: flex;
+  background: pink;
+  flex-direction: column;
+  width: 85%;
+  margin: 0 auto;
+  align-items: center;
+  row-gap: 20px;
+}
+.vertical-container.half-size-vertical-container {
+  width: 40%;
+}
+.vertical-container.float-left {
+  align-items: flex-start;
+  margin: 0;
+}
+.vertical-container.restaurant-view {
+  justify-content: center;
+  row-gap: 30px;
+}
+.vertical-container .restaurant-view {
+  width: 600px;
+}
+.vertical-container .vertical-container-item {
+  height: 100px;
+  width: 100%;
+  background: yellow;
+  display: flex;
+  justify-content: flex-start;
+}
+.vertical-container .vertical-container-item.restaurant-view {
+  height: auto;
+  min-height: 100px;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.vertical-container .vertical-container-item .vertical-container-inner-1 {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  background: green;
+  justify-content: center;
+  row-gap: 20px;
+}
+.vertical-container .vertical-container-item .vertical-container-inner-1 div {
+  background: lightgreen;
+}
+.vertical-container .vertical-container-item .vertical-container-inner-2 {
+  text-align: right;
+  background: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 2;
+}
+.vertical-container .vertical-container-item .vertical-container-inner-3 {
+  text-align: right;
+  display: flex;
+  background: red;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+.vertical-container .vertical-container-item .vertical-container-inner-4 {
+  text-align: right;
+  display: flex;
+  background: orange;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+.vertical-container .vertical-container-item img {
+  height: 80%;
+  flex-shrink: 1;
+  align-self: center;
+}
+
+.row {
+  display: flex;
+}
+
+.restaurant-view-h2 {
+  width: 85%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.float-right {
+  text-align: right;
+  background: lightskyblue;
+}
+
+.red-button {
+  background: red;
+  font-size: 16px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+}
+.red-button:hover {
+  background: yellow;
+  color: black;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.inline-div {
+  display: inline;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -28,20 +28,56 @@
         </header>
         <main>
             <h2>All the restaurants</h2>
-            <form>
+            <form method="post" action="">
                 <label>Search Item<br>
                     <input type="search" name="search" placeholder="Search">
                 </label><br>
                 <label>Sort by<br>
-                    <input type="radio" name="sort" value="newest" checked>Newest First<br>
-                    <input type="radio" name="sort" value="oldest">Oldest First<br>
-                    <input type="radio" name="sort" value="rating-asc">Rating (Lowest to Highest)<br>
-                    <input type="radio" name="sort" value="rating-desc">Rating (Highest to Lowest)<br>
+                    <input type="radio" name="sort" value="name ASC" checked>Alphabetically<br>
+                    <input type="radio" name="sort" value="avg_rating ASC">Rating (Lowest to Highest)<br>
+                    <input type="radio" name="sort" value="avg_rating DESC">Rating (Highest to Lowest)<br>
                 </label>
                 <input type="submit" name="submit" value="Apply">
             </form>
             <div>
-
+                <?php
+                    try {
+                        $query1 =
+                            "WITH
+                                A1 AS (
+                                    SELECT R.restaurant_id, ROUND(AVG(Ra.stars), 1) AS avg_rating
+                                    FROM restaurant R, rating Ra
+                                    WHERE R.restaurant_id = Ra.restaurant_id
+                                    GROUP BY R.restaurant_id
+                                ),
+                                R1 AS (
+                                    SELECT R.restaurant_id, R.name, A1.avg_rating
+                                    FROM restaurant R
+                                    LEFT JOIN A1
+                                    ON R.restaurant_id = A1.restaurant_id
+                                )
+                            SELECT * FROM R1                            
+                            ";
+                        if (isset($_POST["submit"])) {
+                            if ($_POST["search"] != "") {
+                                $query1 .= " WHERE name LIKE '%".$_POST["search"]."%'";
+                            }
+                            $query1 .= " ORDER BY ".$_POST["sort"];
+                            $result = mysqli_query($conn, $query1);
+                        } else {
+                            $result = mysqli_query($conn, $query1." ORDER BY name");
+                        }
+                        $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                        foreach ($items as $row) {
+                            foreach (array_keys($row) as $key) {
+                                echo $key." : ".$row[$key]."<br>";
+                            }
+                            echo "<br>";
+                        }
+                    } catch (mysqli_sql_exception $ex) {
+                        exit("Error: ".$ex->getMessage());
+                    }
+                ?>
             </div>
         </main>
     </body>

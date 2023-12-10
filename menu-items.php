@@ -1,14 +1,17 @@
 <?php
-//    global $conn;
-//    require_once "dbconnect.php";
-//    try {
-//        $query = "SELECT * FROM ordered_items
-//                  GROUP BY food_id";
-//        $result = mysqli_query($conn, $query);
-//        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-//    } catch (mysqli_sql_exception $ex) {
-//        exit("Error: ".$ex->getMessage());
-//    }
+    global $conn;
+    require_once "dbconnect.php";
+    if (empty($_SESSION["user_id"])) {
+        echo "You must be logged in to make an order<br>";
+    }
+    try {
+        $query = "SELECT * FROM ordered_items
+                  GROUP BY food_id";
+        $result = mysqli_query($conn, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } catch (mysqli_sql_exception $ex) {
+        exit("Error: ".$ex->getMessage());
+    }
 ?>
 
 <!doctype html>
@@ -54,12 +57,12 @@
                     </a>
                 </div>
             </div>
-            <a href="">See all offers</a>
+            <a href="offers.php">See all offers</a>
             <h2>Best Sellers</h2>
             <div>
 
             </div>
-            <a href="">See all items</a>
+            <a href="menu-items-all.php">See all items</a>
         </main>
     </body>
 </html>

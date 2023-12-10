@@ -1,6 +1,6 @@
 <?php
-//    global $conn;
-//    require_once "dbconnect.php";
+    global $conn;
+    require_once "dbconnect.php";
 ?>
 
 <!doctype html>
@@ -29,8 +29,10 @@
         <main>
             <p>you <em>hit</em> the order<br>
                we do the <em>running!</em></p><br>
-            <a class="button" href="">Sign up</a>
-            <a class="button" href="">Sign in</a><br>
+            <a class="button" href="sign-up.php">Sign up</a>
+            <a class="button" href="sign-in.php">Sign in</a><br>
+        </main>
+            <!--
             <footer>
                 <h2>About Us</h2>
                 <div class="container">
@@ -51,7 +53,7 @@
                     <div class="row-2"></div>
                 </div>
             </footer>
-        </main>
+            -->
     </body>
 </html>
 

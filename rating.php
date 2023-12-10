@@ -15,7 +15,11 @@
     </head>
     <body>
         <?php
-            include "header.php";
+//            include "header.php";
+            if (isset($_POST["food_id"])) {
+//                $query = "SELECT * FROM rating WHERE food_id = ".$_POST["food_id"]
+//                            ." AND user_id = ";
+            }
         ?>
         <main>
             <h2>Rate a restaurant or food item</h2>
@@ -55,6 +59,12 @@
                 </label><br>
                 <input type="submit" name="submit" value="Submit">
             </form>
+            <?php
+            foreach(array_keys($_POST) as $key) {
+                echo $key, ":", $_POST[$key], "<br>";
+            }
+            ?>
+
         </main>
 
     </body>

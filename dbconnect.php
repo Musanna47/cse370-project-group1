@@ -1,4 +1,5 @@
 <?php
+    session_start();
     try {
         $conn = mysqli_connect(
             hostname: "localhost",
