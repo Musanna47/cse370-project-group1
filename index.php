@@ -12,25 +12,25 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Home</title>
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira%20Code">
     </head>
     <body>
-        <header>
-        <img src="images/food-delivery.png" alt="logo" class="logo">
-        <h1>BiteBlitz</h1>
-            <nav>
-                <ul>
-                    <li>ITEMS</li>
-                    <li>RESTAURANTS</li>
-                    <li>ABOUT</li>
-                    <li>CONTACT</li>
-                </ul>
-            </nav>
-        </header>
+        <?php
+            include "header.php";
+        ?>
         <main>
-            <p>you <em>hit</em> the order<br>
-               we do the <em>running!</em></p><br>
-            <a class="button" href="sign-up.php">Sign up</a>
-            <a class="button" href="sign-in.php">Sign in</a><br>
+            <div class='simple-flexbox no-style'>
+                <div>
+                    <p>you <em>hit</em> the order<br>
+                       we do the <em>running!</em></p><br>
+                    <a class="red-button" href="sign-up.php">Sign up</a>
+                    <a class="red-button" href="customer-or-staff.php">Sign in</a><br>
+
+                </div>
+                <div>
+                    <img class="half-size" src="images/pexels-norma-mortenson-4393426.jpg" alt="index-image">
+                </div>
+            </div>
         </main>
             <!--
             <footer>

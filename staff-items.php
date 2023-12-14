@@ -1,6 +1,14 @@
 <?php
     global $conn;
     require_once "dbconnect.php";
+
+    if (isset($_GET["delete"])) {
+        if (isset($_GET["food_id"])) {
+            $food_id = $_GET["food_id"];
+            $query = "DELETE FROM menu_item WHERE food_id = $food_id";
+            mysqli_query($conn, $query);
+        }
+    }
 ?>
 
 <!doctype html>
@@ -16,7 +24,7 @@
     </head>
     <body>
         <?php
-            include "header.php";
+            include "staff-header.php";
         ?>
         <main>
             <h2>Here's everything we got</h2>
@@ -44,41 +52,41 @@
                     try {
                         $query1 =
                             "WITH
-                                T1 AS (
+                                M1 AS (
                                     SELECT M.food_id, M.name, M.price, R.name AS r_name
                                     FROM menu_item M, restaurant R
                                     WHERE M.restaurant_id = R.restaurant_id
                                 ),
-                                T2 AS (
+                                A1 AS (
                                     SELECT M.food_id, ROUND(AVG(Ra.stars), 1) AS avg_rating
                                     FROM menu_item M, rating Ra
                                     WHERE M.food_id = Ra.food_id
                                     GROUP BY M.food_id
                                 ),
-                                T3 AS (
-                                    SELECT T1.food_id, T1.name, T1.price, T1.r_name, T2.avg_rating
-                                    FROM T1 LEFT JOIN T2
-                                    ON T1.food_id = T2.food_id
+                                M2 AS (
+                                    SELECT M1.food_id, M1.name, M1.price, M1.r_name, A1.avg_rating
+                                    FROM M1 LEFT JOIN A1
+                                    ON M1.food_id = A1.food_id
                                 ),
-                                T4 AS (
+                                D1 AS (
                                     SELECT DI.food_id, MAX(D.percentage) AS percentage FROM discount D
                                     JOIN discounted_items DI
                                     ON D.discount_id = DI.discount_id
                                     WHERE expiry_date > NOW()
                                     GROUP BY DI.food_id
                                 ),
-                                T5 AS (
-                                    SELECT T3.food_id, T3.name, T3.r_name,
-                                        T3.avg_rating, T3.price, T4.percentage
-                                    FROM T3 LEFT JOIN T4
-                                    ON T3.food_id = T4.food_id
+                                M3 AS (
+                                    SELECT M2.food_id, M2.name, M2.r_name, 
+                                        M2.avg_rating, M2.price, D1.percentage
+                                    FROM M2 LEFT JOIN D1
+                                    ON M2.food_id = D1.food_id
                                 )
-                            SELECT food_id, name, r_name, avg_rating, price, percentage,
+                            SELECT food_id, name, r_name, avg_rating, price, percentage, 
                             CASE
                                 WHEN percentage IS NULL THEN price
                                 ELSE price - price * percentage / 100
                             END AS final_price
-                            FROM T5
+                            FROM M3
                             ";
                         if (isset($_POST["submit"])) {
                             if ($_POST["search"] != "") {
@@ -116,13 +124,13 @@
                             }
                             echo " $final_price</div>";
                             echo "<div class='float-right'>
-                                <form class='inline-div' method='get' action='item-view-rating.php'>
+                                <form class='inline-div' method='get' action='staff-add-item.php'>
                                     <input type='hidden' name='food_id' value='$food_id'>
-                                    <input type='submit' name='submit' value='rate' class='red-button'>
+                                    <input type='submit' name='update' value='update' class='red-button'>
                                 </form>
-                                <form class='inline-div' method='get' action='cart.php'>
+                                <form class='inline-div' method='get' action='staff-items.php'>
                                     <input type='hidden' name='food_id' value='$food_id'>
-                                    <input type='submit' name='add-item' value='add to cart' class='red-button'>
+                                    <input type='submit' name='delete' value='delete' class='red-button'>
                                 </form>
                             </div>";
 

@@ -1,6 +1,18 @@
 <?php
     global $conn;
     require_once "dbconnect.php";
+
+    if (isset($_GET["delete"])) {
+        if (isset($_GET["voucher_id"])) {
+            $voucher_id = $_GET["voucher_id"];
+            $query = "DELETE FROM voucher WHERE voucher_id = $voucher_id";
+            mysqli_query($conn, $query);
+        } elseif (isset($_GET["discount_id"])) {
+            $discount_id = $_GET["discount_id"];
+            $query = "DELETE FROM discount WHERE discount_id = $discount_id";
+            mysqli_query($conn, $query);
+        }
+    }
 ?>
 
 <!doctype html>
@@ -45,14 +57,31 @@
                             $expiry_date = $row["expiry_date"];
 
                             echo "<div class='container-item'>
-                                <img src='images/offer-combo-food-based-on-the-season.jpg' alt='donut'>
+                                <img src='images/donut.png' alt='donut'>
                                 <div style='margin: 10px;' class='title'>$title</div>";
                             echo "<div style='margin: 10px;'>Expiry Date: $expiry_date</div>";
                             echo (is_null($promo_code)) ?  "<br>" : "<div>PROMO_CODE: $promo_code</div>";
                             echo "<div style='margin: 10px;'>
-                                    $description 
-                                </div>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis molestias quibusdam reprehenderit! 
+                                    Accusantium consequatur dicta, et eveniet exercitationem fuga impedit minus, nobis, nulla possimus quia quis reiciendis rem ut. 
+                                </div>";
+                            echo "<div class='float-right'>
+                                <form class='inline-div' method='get' action='staff-add-item.php'>";
+                            if (is_null($promo_code))
+                                echo "<input type='hidden' name='discount_id' value='$id'>";
+                            else
+                                echo "<input type='hidden' name='voucher_id' value='$id'>";
+                                    echo "<input type='submit' name='update' value='update' class='red-button'>
+                                </form>
+                                <form class='inline-div' method='get' action='staff-offers.php'>";
+                            if (is_null($promo_code))
+                                echo "<input type='hidden' name='discount_id' value='$id'>";
+                            else
+                                echo "<input type='hidden' name='voucher_id' value='$id'>";
+                                    echo "<input type='submit' name='delete' value='delete' class='red-button'>
+                                </form>
                             </div>";
+                            echo "</div>";
                         }
                     } catch (mysqli_sql_exception $ex) {
                         exit("Error: ".$ex->getMessage());

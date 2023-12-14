@@ -1,6 +1,26 @@
 <?php
     global $conn;
     require_once "dbconnect.php";
+
+    if (isset($_GET["submit"])) {
+        if (isset($_GET["restaurant_id"]) and $_GET["restaurant_id"] != '') {
+            $restaurant_id = $_GET["restaurant_id"];
+            $name = $_GET["name"];
+            if (isset($_GET["category"]) and $_GET["category"] != '')
+                $category = $_GET["category"];
+            else
+                $category = NULL;
+            $price = $_GET["price"];
+            $query =
+                "INSERT INTO menu_item(name, category, price, restaurant_id)
+                VALUES ('$name', '$category', $price, $restaurant_id)";
+            $result = mysqli_query($conn, $query);
+            if ($result) {
+                header("Location: staff-homepage.php");
+                exit();
+            }
+        }
+    }
 ?>
 
 <!doctype html>
@@ -10,37 +30,24 @@
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Sign up</title>
+        <title>All Items</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira%20Code">
     </head>
     <body>
         <?php
-            include "header.php";
+            include "staff-header.php";
         ?>
         <main>
             <div class="container centered">
                 <div>
 
-                    <h2>Welcome aboard!</h2>
-                    <form name="sign-up" method="post" action="">
+                    <form method="get" action="staff-add-restaurant.php">
                         <label>Name<br>
                             <input type="text" name="name" required><br>
                         </label>
                         <label>Phone<br>
                             <input type="text" name="phone" required><br>
-                        </label>
-                        <label>Email<br>
-                            <input type="email" name="email" required><br>
-                        </label>
-                        <label>Date of Birth<br>
-                            <input type="date" name="date-of-birth" required><br>
-                        </label>
-                        <label>Username<br>
-                            <input type="text" name="username" required maxlength="20"><br>
-                        </label>
-                        <label>Password<br>
-                            <input type="password" name="password" required minlength="6" maxlength="20"><br>
                         </label>
                         <h3>Address</h3>
                         <label>Flat<br>
@@ -87,7 +94,6 @@
                         </label>
                         <input class="red-button" type="submit" name="submit" value="Sign up"><br>
                     </form>
-                    Already have an account? <a href="" class="inline-link">Sign in</a>
 
                 </div>
             </div>
@@ -96,13 +102,9 @@
 </html>
 
 <?php
-    if (isset($_POST["submit"])) {
+    if (isset($_GET["submit"]) ) {
         $name = $_POST["name"];
         $phone = $_POST["phone"];
-        $email = $_POST["email"];
-        $date_of_birth = $_POST["date-of-birth"];
-        $username = $_POST["username"];
-        $password = $_POST["password"];
         $flat = $_POST["flat"];
         $house = $_POST["house"];
         $road = $_POST["road"];
@@ -119,13 +121,11 @@
             $result = mysqli_query($conn, $query2);
             $row = mysqli_fetch_array($result);
             $address_id = $row[0];
-            $query3 = "INSERT INTO users (name, phone, email, date_of_birth, customer_flag, 
-                       nid_no, username, user_password, address_id) VALUES 
-                       ('$name', '$phone', '$email', '$date_of_birth', 1, NULL,
-                        '$username', '$password', $address_id)";
+            $query3 = "INSERT INTO restaurant (name, phone_no, address_id) VALUES 
+                       ('$name', '$phone', $address_id)";
             $result = mysqli_query($conn, $query3);
             if ($result) {
-                header("Location: sign-in.php");
+                header("Location: staff-homepage.php");
                 exit();
             }
         } catch (mysqli_sql_exception $ex) {

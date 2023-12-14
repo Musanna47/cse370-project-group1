@@ -1,6 +1,14 @@
 <?php
     global $conn;
     require_once "dbconnect.php";
+
+    if (isset($_GET["delete"])) {
+        if (isset($_GET["restaurant_id"])) {
+            $restaurant_id = $_GET["restaurant_id"];
+            $query = "DELETE FROM restaurant WHERE restaurant_id = $restaurant_id";
+            mysqli_query($conn, $query);
+        }
+    }
 ?>
 
 <!doctype html>
@@ -39,6 +47,7 @@
                 </form>
 
             </div>
+            <div class="container">
                 <?php
                     try {
                         $query1 =
@@ -113,6 +122,7 @@
                         exit("Error: ".$ex->getMessage());
                     }
                 ?>
+            </div>
 
 
 
@@ -174,13 +184,13 @@
 //                            }
 //                            echo " $final_price</div>";
                             echo "<div class='float-right'>
-                                <form class='inline-div' method='get' action='rate.php'>
+                                <form class='inline-div' method='get' action='staff-add-item.php'>
                                     <input type='hidden' name='restaurant_id' value='$restaurant_id'>
-                                    <input type='submit' name='submit' value='rate' class='red-button'>
+                                    <input type='submit' name='update' value='update' class='red-button'>
                                 </form>
-                                <form class='inline-div' method='get' action='restaurant-view-items.php'>
+                                <form class='inline-div' method='get' action='staff-restaurants.php'>
                                     <input type='hidden' name='restaurant_id' value='$restaurant_id'>
-                                    <input type='submit' name='submit' value='visit' class='red-button'>
+                                    <input type='submit' name='delete' value='delete' class='red-button'>
                                 </form>
                             </div>";
 

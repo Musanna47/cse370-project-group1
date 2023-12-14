@@ -1,6 +1,8 @@
 <?php
     global $conn;
     require_once "dbconnect.php";
+
+    $user_id = 1;
 ?>
 
 <!doctype html>
@@ -21,39 +23,60 @@
         <main>
             <div class="container centered">
                 <div>
+                    <?php
+                        $query = "SELECT * FROM users WHERE user_id = $user_id";
+                        $result = mysqli_query($conn, $query);
+                        $row = mysqli_fetch_assoc($result);
+                        $name = $row["name"];
+                        $phone = $row["phone"];
+                        $email = $row["email"];
+                        $date_of_birth = $row["date_of_birth"];
+                        $username = $row["username"];
+                        $password = $row["user_password"];
+                        $address_id = $row["address_id"];
 
+                        $query = "SELECT * FROM address WHERE address_id = $address_id";
+                        $result = mysqli_query($conn, $query);
+                        $row = mysqli_fetch_assoc($result);
+                        $flat_no = $row["flat_no"];
+                        $house_no = $row["house_no"];
+                        $road_no = $row["road_no"];
+                        $zip_code = $row["zip_code"];
+                        $area_id = $row["area_id"];
+
+                    ?>
                     <h2>Welcome aboard!</h2>
                     <form name="sign-up" method="post" action="">
                         <label>Name<br>
-                            <input type="text" name="name" required><br>
+                            <input type="text" name="name" value="<?php echo $name?>" required><br>
                         </label>
                         <label>Phone<br>
-                            <input type="text" name="phone" required><br>
+                            <input type="text" name="phone" value="<?php echo $phone?>" required><br>
                         </label>
                         <label>Email<br>
-                            <input type="email" name="email" required><br>
+                            <input type="email" name="email" value="<?php echo $email?>" required><br>
                         </label>
                         <label>Date of Birth<br>
-                            <input type="date" name="date-of-birth" required><br>
+                            <input type="date" name="date-of-birth" value="<?php echo $date_of_birth?>" required><br>
                         </label>
                         <label>Username<br>
-                            <input type="text" name="username" required maxlength="20"><br>
+                            <input type="text" name="username" value="<?php echo $username?>" required maxlength="20"><br>
                         </label>
                         <label>Password<br>
-                            <input type="password" name="password" required minlength="6" maxlength="20"><br>
+                            <input type="password" name="password" value="<?php echo $password?>" required minlength="6" maxlength="20"><br>
                         </label>
                         <h3>Address</h3>
                         <label>Flat<br>
-                            <input type="text" name="flat" required><br>
+                            <input type="text" name="flat" value="<?php echo $flat_no?>" required><br>
                         </label>
                         <label>House<br>
-                            <input type="number" name="house" required><br>
+                            <input type="number" name="house" value="<?php echo $house_no?>" required><br>
                         </label>
                         <label>Road<br>
-                            <input type="text" name="road" required><br>
+                            <input type="text" name="road" value="<?php echo $road_no?>" required><br>
                         </label>
                         <label>Zip Code<br>
-                            <input type="text" name="zip-code" required minlength="4" maxlength="4"><br>
+                            <input type="text" name="zip-code" value="<?php echo $zip_code?>" required minlength="4" maxlength="4"><br>
                         </label>
                         <h3>Area</h3>
                         <label>
@@ -85,9 +108,9 @@
                                 echo "</select>"."<br>";
                             ?>
                         </label>
-                        <input class="red-button" type="submit" name="submit" value="Sign up"><br>
+                        <input class="red-button" type="submit" name="submit" value="Update"><br>
                     </form>
-                    Already have an account? <a href="" class="inline-link">Sign in</a>
+<!--                    Already have an account? <a href="" class="inline-link">Sign in</a>-->
 
                 </div>
             </div>
@@ -96,7 +119,7 @@
 </html>
 
 <?php
-    if (isset($_POST["submit"])) {
+    if (isset($_POST["submit"]) and $_POST["submit"] == "Update") {
         $name = $_POST["name"];
         $phone = $_POST["phone"];
         $email = $_POST["email"];
@@ -111,23 +134,37 @@
         unset($_POST);
 
         try {
-            $query1 = "INSERT INTO address(flat_no, house_no, 
-                        road_no, zip_code, area_id) VALUES 
-                        ('$flat', $house, '$road', '$zip_code', $area_id)";
+            $query1 = "UPDATE users SET 
+                 name = '$name',
+                 phone = '$phone',
+                 email = '$email',
+                 date_of_birth = '$date_of_birth',
+                 username = '$username',
+                 user_password = '$password'
+                 WHERE user_id = $user_id;
+                 ";
+//            $query1 = "INSERT INTO address(flat_no, house_no,
+//                        road_no, zip_code, area_id) VALUES
+//                        ('$flat', $house, '$road', '$zip_code', $area_id)";
             mysqli_query($conn, $query1);
-            $query2 = "SELECT MAX(address_id) FROM address";
-            $result = mysqli_query($conn, $query2);
-            $row = mysqli_fetch_array($result);
-            $address_id = $row[0];
-            $query3 = "INSERT INTO users (name, phone, email, date_of_birth, customer_flag, 
-                       nid_no, username, user_password, address_id) VALUES 
-                       ('$name', '$phone', '$email', '$date_of_birth', 1, NULL,
-                        '$username', '$password', $address_id)";
-            $result = mysqli_query($conn, $query3);
-            if ($result) {
-                header("Location: sign-in.php");
-                exit();
+            if (isset($_POST["area_id"]) and $_POST["area_id"] != '') {
+                $query2 = "UPDATE address SET 
+                     flat_no = '$flat_no',
+                     house_no = $house_no,
+                     road_no = '$road_no',
+                     zip_code = '$zip_code',
+                     area_id = $area_id,
+                     WHERE address_id = $address_id;
+                     ";
+                $result = mysqli_query($conn, $query2);
+                mysqli_fetch_array($result);
             }
+//            $address_id = $row[0];
+//            $query3 = "INSERT INTO users (name, phone, email, date_of_birth, customer_flag,
+//                       nid_no, username, user_password, address_id) VALUES
+//                       ('$name', '$phone', '$email', '$date_of_birth', 1, NULL,
+//                        '$username', '$password', $address_id)";
+//            $result = mysqli_query($conn, $query3);
         } catch (mysqli_sql_exception $ex) {
             echo "Error: ".$ex->getMessage();
         }

@@ -6,15 +6,15 @@
         $user_id = $_SESSION["user_id"];
     else
         $user_id = 1;
-    if (empty($_GET["restaurant_id"])) {
+    if (empty($_GET["food_id"])) {
         exit();
     }
-    $restaurant_id = $_GET["restaurant_id"];
+    $food_id = $_GET["food_id"];
 
     if (isset($_GET["submit"]) and $_GET["submit"] == "Remove") {
         $query =
             "DELETE FROM rating WHERE user_id = $user_id
-            AND restaurant_id = $restaurant_id";
+            AND food_id = $food_id";
         mysqli_query($conn, $query);
 //        echo "YES";
     }
@@ -29,22 +29,26 @@
             $query =
                 "SELECT COUNT(*) FROM rating
                 WHERE user_id = $user_id
-                AND restaurant_id = $restaurant_id
+                AND food_id = $food_id
                 ";
             $result = mysqli_query($conn, $query);
             $rated = (mysqli_fetch_array($result)[0] != 0);
             if ($rated) {
 //                echo "YES";
                 $query =
-                    "UPDATE rating SET stars = $stars 
-                    WHERE user_id = $user_id AND restaurant_id = $restaurant_id";
+                    "UPDATE rating SET stars = $stars, comment = '$comment' 
+                    WHERE user_id = $user_id AND food_id = $food_id";
                 mysqli_query($conn, $query);
+//                $query =
+//                    "UPDATE rating SET comment = $comment
+//                    WHERE user_id = $user_id AND food_id = $food_id";
+//                mysqli_query($conn, $query);
             } else {
 //                echo "NO";
                 $query =
                     "INSERT INTO rating(user_id, stars, comment, date, 
                             restaurant_flag, restaurant_id, food_id) 
-                    VALUES ($user_id, $stars, '$comment', '$today', 1, $restaurant_id, NULL)";
+                    VALUES ($user_id, $stars, '$comment', '$today', 0, NULL, $food_id)";
                 mysqli_query($conn, $query);
             }
         }
@@ -71,22 +75,21 @@
                 $query1 =
                     "WITH
                         T1 AS (
-                            SELECT R.restaurant_id, R.name, Ar.name AS area, Ar.city, Ar.district
-                            FROM restaurant R, address A, area Ar
-                            WHERE R.address_id = A.address_id
-                            AND A.area_id = Ar.area_id
-                            AND R.restaurant_id = $restaurant_id
+                            SELECT M.food_id, M.name, R.name AS r_name
+                            FROM menu_item M, restaurant R
+                            WHERE M.restaurant_id = R.restaurant_id
+                            AND M.food_id = $food_id
                         ),
                         T2 AS (
-                            SELECT restaurant_id, ROUND(AVG(stars), 1) AS avg_rating
+                            SELECT food_id, ROUND(AVG(stars), 1) AS avg_rating
                             FROM rating
-                            WHERE restaurant_id IS NOT NULL
-                            GROUP BY restaurant_id
+                            WHERE food_id IS NOT NULL
+                            GROUP BY food_id
                         )
-                    SELECT T1.name, T1.area, T1.city, T1.district, T2.avg_rating
+                    SELECT T1.name, T1.r_name, T2.avg_rating
                     FROM T1
                     LEFT JOIN T2
-                    ON T1.restaurant_id = T2.restaurant_id
+                    ON T1.food_id = T2.food_id
                     ";
 //                $query2 =
 //                    "SELECT ROUND(AVG(stars), 1) AS avg_rating
@@ -97,10 +100,8 @@
                 try {
                     $result = mysqli_query($conn, $query1);
                     $row = mysqli_fetch_assoc($result);
-                    $r_name = $row["name"];
-                    $area = $row["area"];
-                    $city = $row["city"];
-                    $district = $row["district"];
+                    $name = $row["name"];
+                    $r_name = $row["r_name"];
                     $avg_rating = $row["avg_rating"];
 
 //                    $result = mysqli_query($conn, $query2);
@@ -109,8 +110,8 @@
 
                     echo "<div class='img-container' '><img src='images/donut.png' alt='donut'></div>
                     <div class='vertical-container half-size-vertical-container float-left restaurant-view'>
-                    <div class='restaurant-view'>$r_name</div>
-                    <div class='restaurant-view'>$area, $city, $district</div>";
+                    <div class='restaurant-view'>$name</div>
+                    <div class='restaurant-view'>$r_name</div>";
                     if (isset($avg_rating))
                         echo "<div class='restaurant-view'>$avg_rating</div>";
                     echo "</div>";
@@ -124,29 +125,29 @@
                 "SELECT stars 
                 FROM rating 
                 WHERE user_id = $user_id 
-                AND restaurant_id = $restaurant_id
+                AND food_id = $food_id
                 ";
             try {
                 $result = mysqli_query($conn, $query);
                 $rows = mysqli_fetch_all($result);
                 if (count($rows) > 0) {
                     $my_stars = $rows[0][0];
-                    echo "You have rated this restaurant $my_stars stars.<br>
+                    echo "You have rated this item $my_stars stars.<br>
                     Update rating? ";
                         echo "<form method='get' action='rate.php'>
-                        <input type='hidden' name='restaurant_id' value=$restaurant_id>
+                        <input type='hidden' name='food_id' value=$food_id>
                         <input type='submit' name='submit' value='Update'>
                     </form>";
-                    echo "<form action='restaurant-view-rating.php'>
-                            <input type='hidden' name='restaurant_id' value=$restaurant_id>
+                    echo "<form action='item-view-rating.php'>
+                            <input type='hidden' name='food_id' value=$food_id>
                             <input type='submit' name='submit' value='Remove'>
                         </form>
                     ";
 
                 } else {
-                    echo "Would you like to rate this restaurant? <br>";
+                    echo "Would you like to rate this item? <br>";
                     echo "<form method='get' action='rate.php'>
-                        <input type='hidden' name='restaurant_id' value=$restaurant_id>
+                        <input type='hidden' name='food_id' value=$food_id>
                         <input type='submit' name='submit' value='Rate'>
                     </form>";
                 }
@@ -165,7 +166,7 @@
                         "SELECT Ra.stars, Ra.comment, Ra.date, U.name
                         FROM users U, rating Ra
                         WHERE U.user_id = Ra.user_id
-                        AND restaurant_id = $restaurant_id
+                        AND food_id = $food_id
                         ";
                     $result = mysqli_query($conn, $query3);
                     $items = mysqli_fetch_all($result, MYSQLI_ASSOC);

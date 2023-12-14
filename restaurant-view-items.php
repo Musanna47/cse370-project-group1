@@ -16,6 +16,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Restaurant View</title>
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira%20Code">
     </head>
     <body>
         <?php
