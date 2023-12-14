@@ -2,7 +2,13 @@
     global $conn;
     require_once "dbconnect.php";
 
-    $user_id = 1;
+    if (empty($_SESSION["user_id"])) {
+        echo "You must be logged in to make an order<br>";
+        header("Location: index.php");
+        exit();
+    } else {
+        $user_id = $_SESSION["user_id"];
+    }
 ?>
 
 <!doctype html>

@@ -95,9 +95,10 @@ VALUES
     (6, 9, 3),
     (6, 3, 1);
 
-INSERT INTO discount (campaign_name, percentage, start_date, expiry_date)
+INSERT INTO discount (title, percentage, start_date, expiry_date, description)
 VALUES
-    ('holiday sale', 5, '2023-12-1', '2023-12-31');
+    ('holiday sale', 5, '2023-12-1', '2023-12-31', 'Great offer');
+
 
 INSERT INTO discounted_items (discount_id, food_id)
 VALUES
@@ -106,10 +107,11 @@ VALUES
     (1, 3),
     (1, 1);
 
-INSERT INTO voucher (promo_code, percentage, start_date, expiry_date)
-VALUES
-    ('special burger offer', 7.5, '2023-12-3', '2023-12-10'),
-    ('winter offer', 5, '2023-12-1', '2024-1-31');
+INSERT INTO voucher (promo_code, percentage, start_date,
+                     expiry_date, title, description)
+VALUES 
+    ('ABC123', 7.5,   '2023-12-3', '2023-12-10','special burger offer','7.5% off'),
+    ('XYZ123', 5,  '2023-12-1', '2024-1-31', 'winter offer', 'Amazing offer');
 
 INSERT INTO rating (user_id, stars, comment, date,
                     restaurant_flag, restaurant_id, food_id)
@@ -134,14 +136,4 @@ VALUES
     ('cc', '01555829431', 'cccc@gmail.com', '1997-11-12', '211234143',
      '141488AD321', 11);
 
-INSERT INTO favorites (user_id, food_id)
-VALUES
-    (1, 5),
-    (1, 3),
-    (1, 2),
-    (3, 3),
-    (3, 7),
-    (3, 6),
-    (5, 2),
-    (5, 4);
 

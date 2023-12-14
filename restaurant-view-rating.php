@@ -2,10 +2,14 @@
     global $conn;
     require_once "dbconnect.php";
 
-    if (isset($_SESSION["user_id"]))
+    if (empty($_SESSION["user_id"])) {
+        echo "You must be logged in to make an order<br>";
+        header("Location: index.php");
+        exit();
+    } else {
         $user_id = $_SESSION["user_id"];
-    else
-        $user_id = 1;
+    }
+
     if (empty($_GET["restaurant_id"])) {
         exit();
     }
